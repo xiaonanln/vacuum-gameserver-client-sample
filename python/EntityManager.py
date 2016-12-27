@@ -1,0 +1,3 @@
+
+class EntityManager(object):
+    pass
