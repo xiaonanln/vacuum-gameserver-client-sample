@@ -14,25 +14,25 @@ entityManager = EntityManager.EntityManager()
 gameDelegate = BaseGameDelegate()
 gameClient = None
 
-def tickingRoutine():
+def Loop():
     while True:
-        print 'loop ...'
         asyncore.loop(0.1, use_poll=True)
-
-tickingThread = threading.Thread(target=tickingRoutine)
 
 def Setup(delegate):
     assert isinstance(delegate, BaseGameDelegate), delegate
     gameDelegate = delegate
-    tickingThread.setDaemon(True)
-    tickingThread.start()
 
 def Connect(host, port):
     gameClient = GSClient.GSClient(host, port)
+    gameClient.messageHandler = handleMessage
 
+def handleMessage(msgType, msg):
+    print 'handleMessage', msgType, msg
+    if msgType == 2:
+        handleCreateEntity(msg['K'], msg['E'])
+    else:
+        print 'invalid message type', msgType
 
-
-
-
-
-
+def handleCreateEntity(entityKind, entityID):
+    print 'handleCreateEntity', entityKind, entityID
+    entityManager.CreateEntity(entityKind, entityID)
