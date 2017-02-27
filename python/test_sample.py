@@ -20,8 +20,8 @@ class Avatar(GSEntity):
 		super(Avatar, self).__init__(*args)
 		print 'Avatar', self.id
 
-Game.RegisterEntityType(0, Account)
-Game.RegisterEntityType(1, Avatar)
+Game.RegisterEntityType("Account", Account)
+Game.RegisterEntityType("Avatar", Avatar)
 
 Game.Connect("localhost", 4000)
 Game.Loop(timeout=3)
