@@ -9,5 +9,8 @@ class GSEntity(object):
 		import Game
 		Game.sendRPC(self.id, method, args)
 
+	def __str__(self):
+		return "%s<%s>" % (self.kind, self.id)
+
 class _ServerProxy(object):
 	pass

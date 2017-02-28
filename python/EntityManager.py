@@ -23,3 +23,7 @@ class EntityManager(object):
 		from GSEntity import GSEntity
 		assert issubclass(cls, GSEntity), cls
 		self.registeredEntityTypes[kind] = cls
+
+	def GetEntity(self, id):
+		return self.entities.get(id)
+

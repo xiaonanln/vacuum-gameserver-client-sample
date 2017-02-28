@@ -3,6 +3,8 @@
 import sys
 import time
 import asyncore
+import traceback
+
 import EntityManager
 import GSClient
 import CallbackManager
@@ -63,7 +65,15 @@ def handleCreateEntity(entityKind, entityID):
 
 def handleServerToClientRPC(entityID, methodName, args):
     print 'handleServerToClientRPC', entityID, methodName, args
+    entity = entityManager.GetEntity(entityID)
+    if entity is None:
+        print 'handleServerToClientRPC: entity %s not found' % entityID
+        return 
 
+    try:
+        getattr(entity, methodName)(*args)
+    except:
+        traceback.print_exc()
 
 def sendRPC(entityID, method, args):
     msg = {
