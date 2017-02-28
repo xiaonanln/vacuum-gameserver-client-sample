@@ -9,6 +9,7 @@ import CallbackManager
 
 from proto import CLIENT_CREATE_ENTITY
 from proto import CLIENT_TO_SERVER_RPC
+from proto import SERVER_TO_CLIENT_RPC
 
 LOOP_INTERVAL = 0.1
 
@@ -50,12 +51,19 @@ def handleMessage(msgType, msg):
     print 'handleMessage', msgType, msg
     if msgType == CLIENT_CREATE_ENTITY:
         handleCreateEntity(msg['K'], msg['E'])
+    elif msgType == SERVER_TO_CLIENT_RPC:
+        # {u'A': [True], u'M': u'OnLogin', u'E': u'WLVN_6d_YzpcAAAO'}
+        handleServerToClientRPC(msg['E'], msg['M'], msg['A'])
     else:
         print 'invalid message type', msgType
 
 def handleCreateEntity(entityKind, entityID):
     print 'handleCreateEntity', entityKind, entityID
     entityManager.CreateEntity(entityKind, entityID)
+
+def handleServerToClientRPC(entityID, methodName, args):
+    print 'handleServerToClientRPC', entityID, methodName, args
+
 
 def sendRPC(entityID, method, args):
     msg = {
