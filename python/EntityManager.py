@@ -27,3 +27,5 @@ class EntityManager(object):
 	def GetEntity(self, id):
 		return self.entities.get(id)
 
+	def DestroyEntity(self, id):
+		self.entities.pop(id, None)

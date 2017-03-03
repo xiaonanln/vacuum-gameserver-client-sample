@@ -56,6 +56,9 @@ def handleMessage(msgType, msg):
     elif msgType == SERVER_TO_CLIENT_RPC:
         # {u'A': [True], u'M': u'OnLogin', u'E': u'WLVN_6d_YzpcAAAO'}
         handleServerToClientRPC(msg['E'], msg['M'], msg['A'])
+    elif msgType == CLIENT_CREATE_ENTITY:
+        # {u'E': u'WLjMd6d_YxSoAAAO'}
+        handleDestroyEntity(msg['E'])
     else:
         print 'invalid message type', msgType
 
@@ -63,12 +66,16 @@ def handleCreateEntity(entityKind, entityID):
     print 'handleCreateEntity', entityKind, entityID
     entityManager.CreateEntity(entityKind, entityID)
 
+def handleDestroyEntity(entityID):
+    print 'handleDestroyEntity', entityID
+    entityManager.DestroyEntity(entityID)
+
 def handleServerToClientRPC(entityID, methodName, args):
     print 'handleServerToClientRPC', entityID, methodName, args
     entity = entityManager.GetEntity(entityID)
     if entity is None:
         print 'handleServerToClientRPC: entity %s not found' % entityID
-        return 
+        return
 
     try:
         getattr(entity, methodName)(*args)
